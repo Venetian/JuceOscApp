@@ -2,23 +2,7 @@
 //  OSCfinder.h
 //  MidiSyncTracker
 //
-//  Created by Andrew Robertson on 30/07/2014.
-//
-//
-
-#ifndef __MidiSyncTracker__OSCfinder__
-#define __MidiSyncTracker__OSCfinder__
-
-#include <iostream>
-
-#endif /* defined(__MidiSyncTracker__OSCfinder__) */
-
-
-//
-//  OSCfinder.cpp
-//  MidiSyncTracker
-//
-//  Created by Andrew Robertson on 30/07/2014.
+//  Created by Hemmer / modified by Andrew Robertson on 30/07/2014.
 //
 //
 
@@ -79,20 +63,15 @@ public:
      */
     void setPrefix(const String &prefix)
     {
-        OSCPrefix = "/" + prefix;// + "/";
-     //   ledStr = OSCPrefix + "led";
-       // ledRowStr = OSCPrefix + "led_row";
-       // ledClearStr = OSCPrefix + "clear";
-       // buttonPressMask = OSCPrefix + "press";
+        OSCPrefix = "/" + prefix;
         
         DBG("prefix now: " << OSCPrefix);
     }
     
 private:
-    // incoming /////////////////////////////
-    // for communication with PluginProcessor
-
+    //Hemmer needed the component info so included a pointer - see his code for how
   //  MainContentComponent* const parent;
+    
     int incomingPort;
     UdpListeningReceiveSocket s;
     
@@ -109,8 +88,9 @@ private:
     
     //   void handleStripMessage(const int &stripID, const osc::ReceivedMessage& m);
     
-    float getFloatOSCArg(const osc::ReceivedMessage& m);
-    int getIntOSCArg(const osc::ReceivedMessage& m);
+    //float getFloatOSCArg(const osc::ReceivedMessage& m);//defunkt as using iterators now
+    float getFloatOSCArg(const osc::ReceivedMessage& m, int index);
+    int getIntOSCArg(const osc::ReceivedMessage& m, int index);
     
     JUCE_LEAK_DETECTOR(OSCfinder);
     

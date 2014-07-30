@@ -9,7 +9,7 @@
 #include "MainComponent.h"
 
 #define PORT 7500
-const String fixedString = "water";
+const String fixedString = "test";//looks for this address
 //==============================================================================
 MainContentComponent::MainContentComponent() : finder(fixedString)//, this)
 {
