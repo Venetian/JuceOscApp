@@ -37,7 +37,7 @@ public Thread
 public:
     
     // Constructor
-    OSCfinder(const String &prefix);//, MainContentComponent* const owner);//, mlrVSTAudioProcessor * const owner);
+    OSCfinder(const String &prefix);//, MainContentComponent* const owner);//from mlrVSTAudioProcessor * const owner);
     
     ~OSCfinder()
     {
@@ -55,12 +55,7 @@ public:
     {
         s.Run();
     }
-    /*
-     void buttonPressCallback(const int &monomeCol, const int &monomeRow, const bool &state);
-     void setLED(const int &row, const int &col, const int &val);
-     void setRow(const int &row, const int &val);
-     void clearGrid();
-     */
+  
     void setPrefix(const String &prefix)
     {
         OSCPrefix = "/" + prefix;
@@ -81,22 +76,20 @@ private:
     osc::OutboundPacketStream p;
     UdpTransmitSocket transmitSocket;
     
-    // strings ////////////////////////////
-    String OSCPrefix;                       // main prefix (/mlrvst/ by default)
-    //   String ledStr, ledRowStr, ledClearStr;  // + "led", + "led_row", + "clear"
-    //   String buttonPressMask;                 // + "press"
-    
-    //   void handleStripMessage(const int &stripID, const osc::ReceivedMessage& m);
+    //string that we search for in osc message, declared on instantiation of oscFinder instance
+    String OSCPrefix;
     
     //float getFloatOSCArg(const osc::ReceivedMessage& m);//defunkt as using iterators now
+    //these two below also not used but example how you might use iterator to get the exact elemetn you require
     float getFloatOSCArg(const osc::ReceivedMessage& m, int index);
     int getIntOSCArg(const osc::ReceivedMessage& m, int index);
     
     JUCE_LEAK_DETECTOR(OSCfinder);
     
 protected:
-    
-    void ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& /*remoteEndpoint*/);
+    //this is our main processing function
+    //overwrite to to do other things with incoming osc messages
+    virtual void ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& /*remoteEndpoint*/);
 };
 
 

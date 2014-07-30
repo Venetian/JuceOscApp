@@ -32,7 +32,7 @@ it may be something else is bound to this port alread
 // Constructor
 OSCfinder:: OSCfinder(const String &prefix):
             Thread("OscListener Thread"),
-            incomingPort(OSC_RECEIVE_PORT), //incomingPort can be changed later ...
+            incomingPort(OSC_RECEIVE_PORT), //incomingPort can this be changed later ? ...
             s(IpEndpointName("localhost", incomingPort), this),
             buffer(), p(buffer, 1536),
             transmitSocket(IpEndpointName("localhost", OSC_SENDER_PORT)),
@@ -63,12 +63,15 @@ void OSCfinder::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointNa
         for (int i = 0; i < numArgs; i++){
             //this isnt great - it assumes one argument which is a float
             
+            //since we check, using the arg->AsFloatUnchecked() would probably be faster
+            //but leaving the checked methods as safer in long run
+            //string is an example of that below
             if (arg->IsFloat())
-                std::cout << "float[" << i << "] : " << getFloatOSCArg(m, i) << std::endl;
-            if (arg->IsInt32())
-                std::cout << "int32[" << i << "] : " << getFloatOSCArg(m, i) << std::endl;
+                std::cout << "float[" << i << "] : " << arg->AsFloat() << std::endl;
+            else if (arg->IsInt32())
+                std::cout << "int32[" << i << "] : " << arg->AsInt32() << std::endl;
             else if (arg->IsString())
-                std::cout << "string" << std::endl;
+                std::cout << "string[" << i << "] : " << arg->AsStringUnchecked() << std::endl;
             else
                 std::cout << "arg type unknown (easy to add your desired type to the code)" << std::endl;
             
@@ -86,7 +89,7 @@ void OSCfinder::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointNa
 
 
 
-
+//no longer need these guys
 float OSCfinder::getFloatOSCArg(const osc::ReceivedMessage& m, int index)
 {
     try
@@ -133,7 +136,7 @@ float OSCfinder::getFloatOSCArg(const osc::ReceivedMessage& m, int index)
     
 }
 
-
+//no longer required
 int OSCfinder::getIntOSCArg(const osc::ReceivedMessage& m, int index)
 {
     try
@@ -161,6 +164,10 @@ int OSCfinder::getIntOSCArg(const osc::ReceivedMessage& m, int index)
         throw e;
     }
 }
+
+
+
+
 
 /*
  
